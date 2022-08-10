@@ -11,7 +11,7 @@
   <arg name="rosbag_path" unless="$(arg online)"/>
 
   <!-- Use CameraInfo topics to get parameters, instead of yaml files -->
-  <arg name="use_online_cam_params" default="false"/>
+  <arg name="use_online_cam_params" default="true"/>
 
   <!-- If true, KimeraVIO will log output of all modules to the
        'log_output_path' location. -->
@@ -53,11 +53,11 @@
   <arg name="odometry_ground_truth_topic"       default="/$(arg uav_name)/ground_truth"/>
 
   <!-- Frame IDs -->
-  <arg name="world_frame_id"     default="$(arg uav_name)/local_origin"/>
-  <arg name="base_link_frame_id" default="$(arg uav_name)/rgbd/link"/>
-  <arg name="map_frame_id"       default="map"/>
-  <arg name="left_cam_frame_id"  default="$(arg uav_name)/rgbd/color_optical"/>
-  <arg name="right_cam_frame_id" default="right"/>
+  <arg name="world_frame_id"     value="world"/>
+  <arg name="base_link_frame_id" value="base_link"/>
+  <arg name="map_frame_id"       value="map"/>
+  <arg name="left_cam_frame_id"  value="left_cam"/>
+  <arg name="right_cam_frame_id" value="right_cam"/>
 
   <!-- General parameters -->
   <arg name="verbosity"    default="0" />
