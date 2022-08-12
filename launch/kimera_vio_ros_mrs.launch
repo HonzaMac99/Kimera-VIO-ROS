@@ -15,7 +15,7 @@
 
   <!-- If true, KimeraVIO will log output of all modules to the
        'log_output_path' location. -->
-  <arg name="log_output" default="false"/>
+  <arg name="log_output" default="true"/>
   <arg name="log_output_path"
        default="$(find kimera_vio_ros)/output_logs/"/>
   <!-- If true, log ground-truth poses to a csv file using the
@@ -41,8 +41,8 @@
   <arg name="uav_cam" default="$(arg uav_name)/rgbd/color"/>
 
   <!-- Subscribed Topics, TODO: namapovat spravny topicy -->
-  <node pkg="beginner_tutorials" name="kimera_manager"
-        type="kimera_manager"     args="$(arg uav_name)"/>  
+  <node pkg="beginner_tutorials" name="kimera_timestamp_manager"
+        type="timestamp_manager"     args="$(arg uav_name) -m none"/>  
   <arg name="left_cam_topic"        default="/$(arg uav_cam)/image_raw2"/>
   <arg name="left_cam_info_topic"   default="/$(arg uav_cam)/camera_info2"/>
   <arg name="right_cam_topic"       default="/$(arg uav_cam)/image_raw2"/>
@@ -109,7 +109,7 @@
     <remap from="gt_odom"   to="$(arg odometry_ground_truth_topic)"
            if="$(eval arg('online') and arg('odometry_ground_truth_topic') != '')"/>
 
-    <remap from="left_cam/camera_info"  to="$(arg left_cam_info_topic)"  if="$(arg online)"/>
+    <remap from="left_cam/camera_info"  to="$(arg left_cam_info_topic)" if="$(arg online)"/>
     <remap from="right_cam/camera_info" to="$(arg left_cam_info_topic)" if="$(arg online)"/>
 
     <!-- if we run offline, use params -->
