@@ -1,7 +1,7 @@
 <launch>
   <!-- General Kimera-VIO-ROS launch file. Change arguments in your own launch
   file and include this one to launch KimeraVIO on the dataset of your choice -->
-  <arg name="dataset_name" default="Mrs" />
+  <arg name="dataset_name" default="Sim" />
   <!-- If False, parses the given rosbag, otw it plays the rosbage -->
   <arg name="online" default="true" />
   <!-- !!!! VIT !!!! This should be true when running online with a rosbag publishing clock,
@@ -41,8 +41,16 @@
   <arg name="uav_cam" default="$(arg uav_name)/rgbd/color"/>
 
   <!-- Subscribed Topics, TODO: namapovat spravny topicy -->
-  <node pkg="beginner_tutorials" name="kimera_timestamp_manager"
-        type="timestamp_manager"     args="$(arg uav_name) -m none"/>  
+  <node 
+    pkg="beginner_tutorials" 
+    name="kimera_timestamp_manager"
+    type="timestamp_manager"     
+    args="$(arg uav_name) -d -r -m equidistant"
+  />   
+
+  <node name="t_world_to_world" pkg="tf2_ros" type="static_transform_publisher" args="0 0 0 0 0 0 $(arg uav_name)/local_origin world" />
+  <node name="t_link_to_link" pkg="tf2_ros" type="static_transform_publisher" args="0 0 0 0 0 0 $(arg uav_name)/fcu base_link" />
+
   <arg name="left_cam_topic"        default="/$(arg uav_cam)/image_raw2"/>
   <arg name="left_cam_info_topic"   default="/$(arg uav_cam)/camera_info2"/>
   <arg name="right_cam_topic"       default="/$(arg uav_cam)/image_raw2"/>
