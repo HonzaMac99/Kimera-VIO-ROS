@@ -11,11 +11,11 @@
   <arg name="rosbag_path" unless="$(arg online)"/>
 
   <!-- Use CameraInfo topics to get parameters, instead of yaml files -->
-  <arg name="use_online_cam_params" default="true"/>
+  <arg name="use_online_cam_params" default="false"/>
 
   <!-- If true, KimeraVIO will log output of all modules to the
        'log_output_path' location. -->
-  <arg name="log_output" default="true"/>
+  <arg name="log_output" default="false"/>
   <arg name="log_output_path"
        default="$(find kimera_vio_ros)/output_logs/"/>
   <!-- If true, log ground-truth poses to a csv file using the
@@ -40,17 +40,20 @@
   <arg name="uav_name" default="$(env UAV_NAME)"/> 
   <arg name="uav_cam" default="$(arg uav_name)/rgbd/color"/>
 
-  <!-- Subscribed Topics, TODO: namapovat spravny topicy -->
+  <!-- check for identical timestamps and change the online params  -->
   <node 
     pkg="beginner_tutorials" 
     name="kimera_timestamp_manager"
     type="timestamp_manager"     
-    args="$(arg uav_name) -d -r -m equidistant"
+    args="$(arg uav_name) -d -m equidistant"
   />   
 
+  <!-- transformations --> <!--
   <node name="t_world_to_world" pkg="tf2_ros" type="static_transform_publisher" args="0 0 0 0 0 0 $(arg uav_name)/local_origin world" />
   <node name="t_link_to_link" pkg="tf2_ros" type="static_transform_publisher" args="0 0 0 0 0 0 $(arg uav_name)/fcu base_link" />
+  -->
 
+  <!-- Subscribed Topics, TODO: namapovat spravny topicy -->
   <arg name="left_cam_topic"        default="/$(arg uav_cam)/image_raw2"/>
   <arg name="left_cam_info_topic"   default="/$(arg uav_cam)/camera_info2"/>
   <arg name="right_cam_topic"       default="/$(arg uav_cam)/image_raw2"/>
@@ -61,6 +64,7 @@
   <arg name="odometry_ground_truth_topic"       default="/$(arg uav_name)/ground_truth"/>
 
   <!-- Frame IDs -->
+  <!-- $(arg uav_name)/local_origin -->
   <arg name="world_frame_id"     value="world"/>
   <arg name="base_link_frame_id" value="base_link"/>
   <arg name="map_frame_id"       value="map"/>
@@ -73,7 +77,7 @@
   <!-- Note that this is duplicated from the flags file -->
   <arg name="visualize"    default="true" />
   <!-- Type of visualization: 0: 2d3d_mesh, 1: pointcloud, 2: none -->
-  <arg name="viz_type"     default="0" />
+  <arg name="viz_type"     default="1" />
 
   <!-- Only here for convenience -->
   <arg name="run_stereo_dense"     default="false"/>

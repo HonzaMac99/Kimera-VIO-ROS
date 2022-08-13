@@ -21,6 +21,7 @@
 
   <arg name="use_lcd"   default="false"/>
   <arg name="visualize" default="true"/>
+  <arg name="viz_type"  default="0"/>
 
   <arg name="use_online_cam_params" value="false"/>
 
