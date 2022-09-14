@@ -11,7 +11,8 @@
   <arg name="rosbag_path" unless="$(arg online)"/>
 
   <!-- Use CameraInfo topics to get parameters, instead of yaml files -->
-  <arg name="use_online_cam_params" default="false"/>
+  <!-- If false, Kimera makes its own tf tree with root "world" from the param files -->
+  <arg name="use_online_cam_params" default="true"/>
 
   <!-- If true, KimeraVIO will log output of all modules to the
        'log_output_path' location. -->
@@ -77,7 +78,8 @@
   <!-- Note that this is duplicated from the flags file -->
   <arg name="visualize"    default="true" />
   <!-- Type of visualization: 0: 2d3d_mesh, 1: pointcloud, 2: none -->
-  <arg name="viz_type"     default="1" />
+  <!-- arg name="viz_type"     default="1" -->
+  <arg name="viz_type"     default="0" />
 
   <!-- Only here for convenience -->
   <arg name="run_stereo_dense"     default="false"/>
