@@ -39,20 +39,21 @@
 
   <!-- Args for mapped topics from the mrs simulation -->
   <arg name="uav_name" default="$(env UAV_NAME)"/> 
-  <arg name="uav_cam" default="$(arg uav_name)/rgbd/color"/>
+  <arg name="uav_cam" default="$(arg uav_name)/vio/camera"/>
+    <!-- note: use "/rgbd/color" ... for normal simulation 
+                   "/vio/camera" ... for sim with vio setup -->
 
   <!-- check for identical timestamps and change the online params  -->
   <node 
-    pkg="beginner_tutorials" 
+    pkg="my_ros_package" 
     name="kimera_timestamp_manager"
     type="timestamp_manager"     
     args="$(arg uav_name) -d -m equidistant"
   />   
 
-  <!-- transformations --> <!--
-  <node name="t_world_to_world" pkg="tf2_ros" type="static_transform_publisher" args="0 0 0 0 0 0 $(arg uav_name)/local_origin world" />
-  <node name="t_link_to_link" pkg="tf2_ros" type="static_transform_publisher" args="0 0 0 0 0 0 $(arg uav_name)/fcu base_link" />
-  -->
+  <!-- transformations -->
+  <!--  <node name="t_world_to_world" pkg="tf2_ros" type="static_transform_publisher" args="0 0 0 0 0 0 $(arg uav_name)/local_origin world" />
+        <node name="t_link_to_link" pkg="tf2_ros" type="static_transform_publisher" args="0 0 0 0 0 0 $(arg uav_name)/fcu base_link" />  -->
 
   <!-- Subscribed Topics, TODO: namapovat spravny topicy -->
   <arg name="left_cam_topic"        default="/$(arg uav_cam)/image_raw2"/>
