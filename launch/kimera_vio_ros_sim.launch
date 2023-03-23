@@ -40,8 +40,8 @@
   <!-- Args for mapped topics from the mrs simulation -->
   <arg name="uav_name" default="$(env UAV_NAME)"/> 
   <arg name="uav_cam" default="$(arg uav_name)/vio/camera"/>
-    <!-- note: use "/rgbd/color" ... for normal simulation 
-                   "/vio/camera" ... for sim with vio setup -->
+    <!-- note: use "$(arg uav_name)/rgbd/color" ... for normal simulation 
+                   "$(arg uav_name)/vio/camera" ... for sim with vio setup -->
 
   <!-- check for identical timestamps and change the online params  -->
   <node 
@@ -54,6 +54,8 @@
   <!-- transformations -->
   <!--  <node name="t_world_to_world" pkg="tf2_ros" type="static_transform_publisher" args="0 0 0 0 0 0 $(arg uav_name)/local_origin world" />
         <node name="t_link_to_link" pkg="tf2_ros" type="static_transform_publisher" args="0 0 0 0 0 0 $(arg uav_name)/fcu base_link" />  -->
+
+  <node name="my_t_world_to_world" pkg="tf2_ros" type="static_transform_publisher" args="0 0 0 0 0 0 $(arg uav_name)/fixed_map_odom $(arg uav_name)/mrs_vins_world" />
 
   <!-- Subscribed Topics, TODO: namapovat spravny topicy -->
   <arg name="left_cam_topic"        default="/$(arg uav_cam)/image_raw2"/>
