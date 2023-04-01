@@ -40,16 +40,17 @@
   <!-- Args for mapped topics from the mrs simulation -->
   <arg name="uav_name" default="$(env UAV_NAME)"/> 
   <arg name="uav_cam" default="$(arg uav_name)/vio/camera"/>
-    <!-- note: use "$(arg uav_name)/rgbd/color" ... for normal simulation 
-                   "$(arg uav_name)/vio/camera" ... for sim with vio setup -->
+    <!-- note: use "$(arg uav_name)/rgbd/color" .......... for normal simulation 
+                   "$(arg uav_name)/vio/camera" .......... for sim with vio setup 
+                   "$(arg uav_name)/fisheye_undisotrt" ... for sim with undist img. -->
 
   <!-- check for identical timestamps and change the online params  -->
   <node 
     pkg="my_ros_package" 
     name="kimera_timestamp_manager"
     type="timestamp_manager"     
-    args="$(arg uav_name) -d -m equidistant"
-  />   
+    args="$(arg uav_name) -d -k -m equidistant"
+  />  
 
   <!-- transformations -->
   <!--  <node name="t_world_to_world" pkg="tf2_ros" type="static_transform_publisher" args="0 0 0 0 0 0 $(arg uav_name)/local_origin world" />
@@ -63,6 +64,7 @@
   <arg name="right_cam_topic"       default="/$(arg uav_cam)/image_raw2"/>
   <arg name="right_cam_info_topic"  default="/$(arg uav_cam)/camera_info2"/>
   <arg name="imu_topic"             default="/$(arg uav_name)/mavros/imu/data2"/>
+
   <!-- Empty string ("") means no ground-truth available. Used for init if
    requested to do ground-truth initialization. -->
   <arg name="odometry_ground_truth_topic"       default="/$(arg uav_name)/ground_truth"/>

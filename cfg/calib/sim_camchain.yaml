@@ -1,0 +1,10 @@
+# orig. file name: chessboard_calibration-camchain.yaml
+# located in /home/honzamac/sim_datasets/calib_results
+cam0:
+  cam_overlaps: []
+  camera_model: pinhole
+  distortion_coeffs: [0.018658403355963006, -0.0002670905345555619, 0.0025523971194075594, -0.001114949185918004]
+  distortion_model: equidistant
+  intrinsics: [227.51314493500365, 228.15948740616443, 375.53114725416026, 240.62293441717577]
+  resolution: [752, 480]
+  rostopic: /uav1/vio/camera/image_raw
