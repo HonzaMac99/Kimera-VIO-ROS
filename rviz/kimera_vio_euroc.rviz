@@ -126,7 +126,7 @@ Visualization Manager:
       Size (Pixels): 3
       Size (m): 0.009999999776482582
       Style: Flat Squares
-      Topic: /kimera_vio_ros/glob_pcloud
+      Topic: /pointcloud_manager/glob_cloud
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
