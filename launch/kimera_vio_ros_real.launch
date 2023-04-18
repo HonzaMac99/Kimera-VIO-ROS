@@ -49,7 +49,7 @@
     pkg="my_ros_package" 
     name="kimera_timestamp_manager"
     type="timestamp_manager"     
-    args="$(arg uav_name) -d sim -k sim -m equidistant"
+    args="$(arg uav_name) -d real -k real -r -m equidistant -f camera"
   />  
 
   <!-- transformations -->

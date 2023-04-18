@@ -1,5 +1,5 @@
 <launch>
-  <arg name="dataset_path"  default="/home/tonirv/datasets/EuRoC/MH_05_difficult"/>
+  <arg name="dataset_path"  default="/home/honzamac/kimera_ws/datasets/V1_01_easy"/>
   <arg name="input_odometry" default="/kimera_vio_ros/odometry"/>
 
   <!-- Assumes we have the same data directory than Euroc, since we use EurocDataProvider-->

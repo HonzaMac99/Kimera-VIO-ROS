@@ -1,4 +1,4 @@
-# orig. file name: chessboard_calibration-camchain.yaml
+# orig. file name: fisheye_calibration-camchain.yaml
 # located in /home/honzamac/sim_datasets/calib_results
 cam0:
   cam_overlaps: []

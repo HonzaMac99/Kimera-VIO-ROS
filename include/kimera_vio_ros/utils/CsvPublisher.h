@@ -36,8 +36,8 @@ namespace utils {
 
 class CsvPublisher {
  public:
-  KIMERA_POINTER_TYPEDEFS(CsvPublisher);
-  KIMERA_DELETE_COPY_CONSTRUCTORS(CsvPublisher);
+  KIMERA_POINTER_TYPEDEFS(CsvPublisher);  // note: defined in Macros.h
+  KIMERA_DELETE_COPY_CONSTRUCTORS(CsvPublisher); // note: defined in Macros.h
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   using MapIterator = std::map<Timestamp, VioNavState>::iterator;
 
