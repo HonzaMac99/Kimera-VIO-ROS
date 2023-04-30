@@ -14,7 +14,7 @@
        if="$(arg log_output)"/>
   <!-- Set to true and specify gt_topic if you want to log ground-truth data -->
   <arg name="log_gt_data" default="false"/>
-  <arg name="gt_topic"    default="/vicon/firefly_sbx/firefly_sbx"/>
+  <arg name="gt_topic"    default="ground_truth_odometry_topic"/>
 
   <rosparam param="gt_gyro_bias"> [-0.002229, 0.0207, 0.07635] </rosparam>
   <rosparam param="gt_accel_bias"> [-0.012492, 0.547666, 0.069073] </rosparam>
@@ -28,6 +28,14 @@
   <!-- Change rosbag path if online argument is false -->
   <arg name="rosbag_path" default="~/kimera_ws/bagfiles/V1_01_easy.bag"
     unless="$(arg online)"/>
+
+  <!-- Using original values of the subscribed topics -->
+
+  <!-- If false, default is an empty string (""), which means no ground-truth available. 
+       Used for init if requested to do ground-truth initialization. -->
+  <arg name="use_odom" value="true"/>
+  <arg name="odometry_ground_truth_topic" default="/gt_manager/odometry"
+       if="$(arg use_odom)"/> 
 
   <!-- Frame IDs -->
   <arg name="base_link_frame_id" value="base_link"/>
