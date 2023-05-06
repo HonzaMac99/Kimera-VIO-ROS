@@ -38,9 +38,8 @@ namespace VIO {
 
 RosVisualizer::RosVisualizer(const VioParams& vio_params)
     // I'm not sure we use this flag in ROS?
-    : Visualizer3D(vio_params.frontend_type_ == FrontendType::kMonoImu
-                   ? VisualizationType::kNone
-                   : VisualizationType::kMesh2dTo3dSparse),
+    // edit: now we use 3d mesh with mono as well
+    : Visualizer3D(VisualizationType::kMesh2dTo3dSparse),
       nh_(),
       nh_private_("~"),
       image_size_(vio_params.camera_params_.at(0).image_size_),
