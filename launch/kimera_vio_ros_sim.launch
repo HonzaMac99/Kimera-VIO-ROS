@@ -1,5 +1,6 @@
 <launch>
   <arg name="dataset_name" value="Sim"/>
+  <arg name="verbosity"    default="0" />
   <arg name="online" default="true" />
 
   <!-- Set log_output to true and KimeraVIO will log output of all modules to
@@ -13,7 +14,7 @@
   <arg name="gt_topic"    default="uav1/kimera_vio_ros/odom"/>
 
   <!-- Set should_use_sim_time to true if you use rosbag with clock argument -->
-  <arg name="should_use_sim_time" default="true"/>  <!-- try false?? -->
+  <arg name="should_use_sim_time" default="false"/>  <!-- try false?? -->
 
   <!-- Only used when parsing a rosbag -->
   <arg name="rosbag_path" default="default.bag"
@@ -38,7 +39,8 @@
   <arg name="uav_cam" default="$(arg uav_name)/vio/camera"/>
     <!-- note: use "$(arg uav_name)/rgbd/color" .......... for normal simulation 
                    "$(arg uav_name)/vio/camera" .......... for sim with vio setup 
-                   "$(arg uav_name)/fisheye_undisotrt" ... for sim with undist img. -->
+                   "$(arg uav_name)/fisheye_undistort" ... for sim with undist img. 
+                   "$/mv_25003659" ....................... for real world dataest -->
 
   <!-- Launching the timestamp manager for correcting the 
        image, camera info and imu topics externally or here -->
@@ -53,31 +55,55 @@
     /> 
   </group>
 
-  <!-- Subscribed Topics, TODO: namapovat spravny topicy -->
+  <!-- Subscribed Topics, TODO: map the correct topics -->
   <arg name="left_cam_topic"        default="/$(arg ts_m_topic)/image_raw"/>
   <arg name="left_cam_info_topic"   default="/$(arg ts_m_topic)/camera_info"/>
-  <arg name="right_cam_topic"       default="/$(arg ts_m_topic)/image_raw"/>
-  <arg name="right_cam_info_topic"  default="/$(arg ts_m_topic)/camera_info"/>
   <arg name="imu_topic"             default="/$(arg ts_m_topic)/imu/data"/>
 
-  <!-- If false, default is an empty string (""), which means no ground-truth available. 
-       Used for init if requested to do ground-truth initialization. -->
+  <!-- The authors use fake stereo cam in mono, so this also needs to be filled in -->
+  <arg name="right_cam_topic"       default="/$(arg ts_m_topic)/image_raw"/> 
+  <arg name="right_cam_info_topic"  default="/$(arg ts_m_topic)/camera_info"/> 
+
+
+  <!-- Ground-truth odometry for initialization. -->
   <arg name="use_odom" value="true"/>
-  <arg name="odometry_ground_truth_topic" default="/uav1/odometry/odom_gps"
-       if="$(arg use_odom)"/> 
+  <arg name="transform_odom" value="false"/>
+
+  <!-- odometry manager rotates the initial gt_odometry to camera frame -->
+  <node pkg="my_ros_package" name="odometry_manager" type="odometry_manager" 
+        output="screen" if="$(arg transform_odom)"/> 
+
+  <!-- TODO: is there any better way how to do double if-else cond?? -->
+  <arg name="odometry_gt_topic" default="/odometry_manager/odometry"
+       if="$(arg transform_odom)"/> 
+  <arg name="odometry_gt_topic" default="/uav1/odometry/odom_gps"
+       unless="$(arg transform_odom)"/>
+  <arg name="odometry_ground_truth_topic" default="$(arg odometry_gt_topic)"
+       if="$(arg use_odom)"/>
+
+
+  <!-- Get accurate external positions -->
+  <arg name="use_reinit" value="false"/>
+  <arg name="reinit_flag_topic" default = "/reinit_manager/flag" 
+       if="$(arg use_reinit)"/>
+  <arg name="reinit_pose_topic" default = "/reinit_manager/pose" 
+       if="$(arg use_reinit)"/>
+  <!-- TODO: try also passing velocities? -->
+
 
   <!-- Frame IDs -->
-  <arg name="world_frame_id"     value="kimera/world"/>
-  <arg name="base_link_frame_id" value="kimera/body"/>
-  <arg name="map_frame_id"       value="kimera/map"/>
-  <arg name="left_cam_frame_id"  value="kimera/left_cam"/>
-  <arg name="right_cam_frame_id" value="kimera/right_cam"/>
+  <arg name="world_frame_id"     value="kimera_world"/>
+  <arg name="base_link_frame_id" value="kimera_body"/>
+  <arg name="map_frame_id"       value="kimera_map"/>
+  <arg name="left_cam_frame_id"  value="kimera_left_cam"/>
+  <arg name="right_cam_frame_id" value="kimera_right_cam"/>
 
   <!-- Launch actual pipeline -->
   <include file="$(find kimera_vio_ros)/launch/kimera_vio_ros.launch"
     pass_all_args="true"/>
 
   <!-- Launch static TF node to connect Kimera and Simulation tf trees -->
+  <!-- x y z qx qy qz qw -->
   <node 
     name="sim_w_to_k_w" 
     pkg="tf2_ros" 
@@ -86,12 +112,16 @@
                       $(arg world_frame_id)"
   /> 
   <!-- in "world" frame
+    name="sim_w_to_k_w" 
     args="0 0 0 0 0 0 $(arg uav_name)/stable_origin 
                       $(arg world_frame_id)"
     args="0 0 0 0 0 -0.707 0.707 $(arg uav_name)/stable_origin 
                                  $(arg world_frame_id)"
+    args="0 0 0 0.5 -0.5 0.5 -0.5 $(arg uav_name)/stable_origin 
+                                  $(arg world_frame_id)"
   -->
   <!-- in "body" frame
+    name="sim_b_to_k_b" 
     args="0 0 0 0 0 0 $(arg uav_name)/fcu 
                       $(arg base_link_frame_id)" 
   -->  

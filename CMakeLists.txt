@@ -1,4 +1,5 @@
-cmake_minimum_required(VERSION 2.8.3)
+#cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.5.0) # to supress warnings
 project(kimera_vio_ros)
 
 find_package(catkin_simple REQUIRED)

@@ -1,5 +1,6 @@
 <launch>
   <arg name="dataset_name" value="Real"/>
+  <arg name="verbosity"    default="0" />
   <arg name="online" default="true" />
 
   <!-- Set log_output to true and KimeraVIO will log output of all modules to
@@ -47,44 +48,75 @@
     <node 
       pkg="my_ros_package" 
       name="kimera_timestamp_manager"
-      type="timestamp_manager"     
-      args="$(arg uav_cam) -d real -k real -r -m equidistant -f camera"
+      type="timestamp_manager_real"     
+      args="$(arg uav_cam) -d real -k real -r -m equidistant -f uav35/camera_local_pose"
       output="screen"
     /> <!-- Can it run with unless as the first arg wihtout group?? --> 
   </group>
 
-  <!-- Subscribed Topics, TODO: namapovat spravny topicy -->
+  <!-- Subscribed Topics, TODO: map the correct topics -->
   <arg name="left_cam_topic"        default="/$(arg ts_m_topic)/image_raw"/>
   <arg name="left_cam_info_topic"   default="/$(arg ts_m_topic)/camera_info"/>
-  <arg name="right_cam_topic"       default="/$(arg ts_m_topic)/image_raw"/>
-  <arg name="right_cam_info_topic"  default="/$(arg ts_m_topic)/camera_info"/>
   <arg name="imu_topic"             default="/$(arg ts_m_topic)/imu/data"/>
 
-  <!-- Empty string ("") means no ground-truth available. Used for init if
-   requested to do ground-truth initialization. -->
+  <!-- The authors use fake stereo cam in mono, so this also needs to be filled in -->
+  <arg name="right_cam_topic"       default="/$(arg ts_m_topic)/image_raw"/> 
+  <arg name="right_cam_info_topic"  default="/$(arg ts_m_topic)/camera_info"/> 
+
+  <!-- Ground-truth odometry for initialization -->
   <arg name="use_odom" value="true"/>
-  <arg name="odometry_ground_truth_topic"   default="/vins_estimator/odometry"
+  <arg name="odometry_ground_truth_topic"   default="/gt_odom_publisher/odometry"
        if="$(arg use_odom)"/> 
-  <arg name="odometry_ground_truth_topic"   default=""
-       unless="$(arg use_odom)"/>
+
+  <!-- Get accurate external positions -->
+  <arg name="use_reinit" value="true"/>
+  <arg name="reinit_flag_topic" default = "/reinit_manager/flag" 
+       if="$(arg use_reinit)"/>
+  <arg name="reinit_pose_topic" default = "/reinit_manager/pose" 
+       if="$(arg use_reinit)"/>
+  <!-- TODO: try also passing velocities? -->
 
   <!-- Frame IDs -->
-  <arg name="world_frame_id"     value="kimera/world"/>
-  <arg name="base_link_frame_id" value="kimera/body"/>
-  <arg name="map_frame_id"       value="kimera/map"/>
-  <arg name="left_cam_frame_id"  value="kimera/left_cam"/>
-  <arg name="right_cam_frame_id" value="kimera/right_cam"/>
+  <arg name="world_frame_id"     value="kimera_world"/>
+  <arg name="base_link_frame_id" value="kimera_body"/>
+  <arg name="map_frame_id"       value="kimera_map"/>
+  <arg name="left_cam_frame_id"  value="kimera_left_cam"/>
+  <arg name="right_cam_frame_id" value="kimera_right_cam"/>
 
   <!-- Launch actual pipeline -->
   <include file="$(find kimera_vio_ros)/launch/kimera_vio_ros.launch"
     pass_all_args="true"/>
 
-  <!-- Launch static TF node to connect Kimera and Simulation tf trees -->
+  <!-- Launch static TF node to create local rtk origin -->
   <node 
-    name="my_w_to_cw" 
+    name="rtk_origin_to_local"
     pkg="tf2_ros" 
     type="static_transform_publisher" 
-    args="0 0 0 0 0 0 world 
-                      kimera/world"
+    args="-111.0 -38.0 -0.04 0.002 -0.013 0.186 -0.982 uav35/rtk_origin 
+                                                       uav35/rtk_local_origin" 
+  />
+
+  <!-- Launch static TF node to connect Kimera and Simulation tf trees -->
+  <!-- x y z qx qy qz qw -->
+  <node 
+    name="sim_w_to_k_w" 
+    pkg="tf2_ros" 
+    type="static_transform_publisher" 
+    args="0 0 0 0 0 0 uav35/rtk_local_origin 
+                      $(arg world_frame_id)"
   /> 
+  <!-- in "world" frame
+    name="sim_w_to_k_w" 
+    args="0 0 0 0 0 0 uav35/rtk_local_origin 
+                      $(arg world_frame_id)"
+    args="0 0 0 0 0 -0.707 0.707 uav35/rtk_local_origin 
+                                 $(arg world_frame_id)"
+    args="0 0 0 0.5 -0.5 0.5 -0.5 uav35/rtk_local_origin 
+                                  $(arg world_frame_id)"
+  -->
+  <!-- in "body" frame (is this local??) 
+    name="sim_b_to_k_b" 
+    args="0 0 0 0 0 0 uav35/fcu 
+                      $(arg base_link_frame_id)" 
+  -->  
 </launch>

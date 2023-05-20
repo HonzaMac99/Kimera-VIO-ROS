@@ -46,6 +46,11 @@
    requested to do ground-truth initialization. -->
   <arg name="odometry_ground_truth_topic"       default=""/>
 
+  <!-- Used to get accurate positions in order to be able to compare mesher
+    results with another methods that also use accurate positions like FLaME -->
+  <arg name="reinit_flag_topic" default = "reinit_flag"/>
+  <arg name="reinit_pose_topic" default = "reinit_pose"/>
+
   <!-- Frame IDs -->
   <arg name="world_frame_id"     default="world"/>
   <arg name="base_link_frame_id" default="base_link"/>
@@ -116,8 +121,8 @@
     <param name="log_gt_data"            value="$(arg log_gt_data)"     unless="$(arg online)"/>
 
     <!-- Other subscription topics -->
-    <remap from="reinit_flag" to="reinit_flag"/>
-    <remap from="reinit_pose" to="reinit_pose"/>
+    <remap from="reinit_flag" to="$(arg reinit_flag_topic)"/>
+    <remap from="reinit_pose" to="$(arg reinit_pose_topic)"/>
 
     <!-- Remap publisher topics -->
     <remap from="odometry"                       to="odometry"/>

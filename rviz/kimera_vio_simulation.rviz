@@ -6,9 +6,10 @@ Panels:
       Expanded:
         - /Global Options1
         - /TF1/Frames1
-        - /PointCloud Time Horizon1
+        - /KimeraOdom1/Shape1
+        - /OdomGps1/Shape1
       Splitter Ratio: 0.6529411673545837
-    Tree Height: 284
+    Tree Height: 202
   - Class: rviz/Selection
     Name: Selection
   - Class: rviz/Tool Properties
@@ -63,15 +64,13 @@ Visualization Manager:
           Value: false
         base_link_frd:
           Value: false
-        gazebo_user_camera:
-          Value: false
-        kimera/body:
-          Value: false
-        kimera/left_cam:
+        kimera_body:
           Value: true
-        kimera/right_cam:
-          Value: false
-        kimera/world:
+        kimera_left_cam:
+          Value: true
+        kimera_right_cam:
+          Value: true
+        kimera_world:
           Value: true
         map:
           Value: false
@@ -98,6 +97,24 @@ Visualization Manager:
         uav1/gps_origin_amsl:
           Value: false
         uav1/local_origin:
+          Value: false
+        uav1/rgbd/aligned_depth_to_color:
+          Value: false
+        uav1/rgbd/aligned_depth_to_color_optical:
+          Value: false
+        uav1/rgbd/color:
+          Value: false
+        uav1/rgbd/color_optical:
+          Value: false
+        uav1/rgbd/infra1:
+          Value: false
+        uav1/rgbd/infra1_optical:
+          Value: false
+        uav1/rgbd/infra2:
+          Value: false
+        uav1/rgbd/infra2_optical:
+          Value: false
+        uav1/rgbd/link:
           Value: false
         uav1/stable_origin:
           Value: true
@@ -134,20 +151,31 @@ Visualization Manager:
           uav1/garmin:
             {}
           uav1/gps_origin:
-            gazebo_user_camera:
-              {}
             uav1/gps_origin_amsl:
               {}
             uav1/utm_origin:
               {}
           uav1/local_origin:
             {}
+          uav1/rgbd/link:
+            uav1/rgbd/aligned_depth_to_color:
+              uav1/rgbd/aligned_depth_to_color_optical:
+                {}
+            uav1/rgbd/color:
+              uav1/rgbd/color_optical:
+                {}
+            uav1/rgbd/infra1:
+              uav1/rgbd/infra1_optical:
+                {}
+            uav1/rgbd/infra2:
+              uav1/rgbd/infra2_optical:
+                {}
           uav1/stable_origin:
-            kimera/world:
-              kimera/body:
-                kimera/left_cam:
+            kimera_world:
+              kimera_body:
+                kimera_left_cam:
                   {}
-                kimera/right_cam:
+                kimera_right_cam:
                   {}
           uav1/vio_origin:
             uav1/vio_origin_amsl:
@@ -157,8 +185,8 @@ Visualization Manager:
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: 2.0490972995758057
-        Min Value: 2.0215096473693848
+        Max Value: 2.1897215843200684
+        Min Value: 2.0396454334259033
         Value: true
       Axis: Z
       Channel Name: intensity
@@ -166,7 +194,7 @@ Visualization Manager:
       Color: 255; 255; 255
       Color Transformer: AxisColor
       Decay Time: 20
-      Enabled: true
+      Enabled: false
       Invert Rainbow: false
       Max Color: 255; 255; 255
       Min Color: 0; 0; 0
@@ -178,6 +206,62 @@ Visualization Manager:
       Size (m): 0.009999999776482582
       Style: Spheres
       Topic: /kimera_vio_ros/time_horizon_pointcloud
+      Unreliable: false
+      Use Fixed Frame: true
+      Use rainbow: true
+      Value: false
+    - Alpha: 1
+      Autocompute Intensity Bounds: true
+      Autocompute Value Bounds:
+        Max Value: 10
+        Min Value: -10
+        Value: true
+      Axis: Z
+      Channel Name: intensity
+      Class: rviz/PointCloud2
+      Color: 255; 255; 255
+      Color Transformer: Intensity
+      Decay Time: 0
+      Enabled: true
+      Invert Rainbow: false
+      Max Color: 255; 255; 255
+      Min Color: 0; 0; 0
+      Name: RefCloud
+      Position Transformer: XYZ
+      Queue Size: 10
+      Selectable: true
+      Size (Pixels): 3
+      Size (m): 0.009999999776482582
+      Style: Flat Squares
+      Topic: /ref_point_cloud
+      Unreliable: false
+      Use Fixed Frame: true
+      Use rainbow: true
+      Value: true
+    - Alpha: 1
+      Autocompute Intensity Bounds: true
+      Autocompute Value Bounds:
+        Max Value: 0.06413030624389648
+        Min Value: 0.05798029899597168
+        Value: true
+      Axis: Z
+      Channel Name: intensity
+      Class: rviz/PointCloud2
+      Color: 255; 255; 255
+      Color Transformer: AxisColor
+      Decay Time: 0
+      Enabled: true
+      Invert Rainbow: false
+      Max Color: 255; 255; 255
+      Min Color: 0; 0; 0
+      Name: GlobCloud
+      Position Transformer: XYZ
+      Queue Size: 10
+      Selectable: true
+      Size (Pixels): 3
+      Size (m): 0.019999999552965164
+      Style: Flat Squares
+      Topic: /pointcloud_manager/glob_cloud
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
@@ -240,12 +324,12 @@ Visualization Manager:
         Value: true
       Enabled: true
       Keep: 1
-      Name: Odometry
+      Name: KimeraOdom
       Position Tolerance: 0.10000000149011612
       Queue Size: 10
       Shape:
         Alpha: 1
-        Axes Length: 0.30000001192092896
+        Axes Length: 0.5
         Axes Radius: 0.009999999776482582
         Color: 255; 25; 0
         Head Length: 0.30000001192092896
@@ -254,6 +338,41 @@ Visualization Manager:
         Shaft Radius: 0.05000000074505806
         Value: Axes
       Topic: /kimera_vio_ros/odometry
+      Unreliable: false
+      Value: true
+    - Angle Tolerance: 0.10000000149011612
+      Class: rviz/Odometry
+      Covariance:
+        Orientation:
+          Alpha: 0.5
+          Color: 255; 255; 127
+          Color Style: Unique
+          Frame: Local
+          Offset: 1
+          Scale: 1
+          Value: true
+        Position:
+          Alpha: 0.30000001192092896
+          Color: 204; 51; 204
+          Scale: 1
+          Value: true
+        Value: true
+      Enabled: true
+      Keep: 1
+      Name: OdomGps
+      Position Tolerance: 0.10000000149011612
+      Queue Size: 10
+      Shape:
+        Alpha: 1
+        Axes Length: 0.5
+        Axes Radius: 0.009999999776482582
+        Color: 255; 25; 0
+        Head Length: 0.30000001192092896
+        Head Radius: 0.10000000149011612
+        Shaft Length: 1
+        Shaft Radius: 0.05000000074505806
+        Value: Axes
+      Topic: /uav1/odometry/odom_gps
       Unreliable: false
       Value: true
     - Class: rviz/Group
@@ -317,34 +436,6 @@ Visualization Manager:
       Enabled: true
       Name: PoseGraph
     - Alpha: 1
-      Autocompute Intensity Bounds: true
-      Autocompute Value Bounds:
-        Max Value: 10
-        Min Value: -10
-        Value: true
-      Axis: Z
-      Channel Name: intensity
-      Class: rviz/PointCloud2
-      Color: 255; 255; 255
-      Color Transformer: RGB8
-      Decay Time: 0
-      Enabled: false
-      Invert Rainbow: false
-      Max Color: 255; 255; 255
-      Min Color: 0; 0; 0
-      Name: PointCloud2
-      Position Transformer: XYZ
-      Queue Size: 10
-      Selectable: true
-      Size (Pixels): 3
-      Size (m): 0.009999999776482582
-      Style: Flat Squares
-      Topic: /stereo_gray/dense_stereo/pointcloud
-      Unreliable: false
-      Use Fixed Frame: true
-      Use rainbow: true
-      Value: false
-    - Alpha: 1
       Buffer Length: 1
       Class: rviz/Path
       Color: 25; 255; 0
@@ -370,9 +461,9 @@ Visualization Manager:
       Value: false
   Enabled: true
   Global Options:
-    Background Color: 0; 0; 0
+    Background Color: 30; 30; 30
     Default Light: true
-    Fixed Frame: kimera/world
+    Fixed Frame: uav1/stable_origin
     Frame Rate: 30
   Name: root
   Tools:
@@ -396,7 +487,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/ThirdPersonFollower
-      Distance: 3.9361820220947266
+      Distance: 4.1056976318359375
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -404,17 +495,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 0
-        Y: 0
-        Z: 0
+        X: 0.09173774719238281
+        Y: -1.2096024751663208
+        Z: 5.588816748058889e-06
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.7053982615470886
+      Pitch: 0.6403979659080505
       Target Frame: kimera/left_cam
-      Yaw: 0.5153982639312744
+      Yaw: 1.5785855054855347
     Saved:
       - Class: rviz/ThirdPersonFollower
         Distance: 1.2782713174819946
@@ -486,7 +577,7 @@ Window Geometry:
   Hide Right Dock: false
   Left Img:
     collapsed: false
-  QMainWindow State: 000000ff00000000fd000000040000000000000156000001a2fc020000000afb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003b000001a2000000c700fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb00000016004c006500660074002000430061006d0065007200610000000222000001490000000000000000fb0000000e003200440020004d00650073006800000004350000009f00000000000000000000000100000190000001a2fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073010000003b000001a2000000a000fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e100000197000000030000075e00000078fc0100000004fb0000000800540069006d006502000004270000025800000359000001e0fb00000010004c00650066007400200049006d00670100000000000003be0000006700fffffffb000000120044006500620075006700200049006d006701000003c40000039a0000007800fffffffb0000000800540069006d006501000000000000045000000000000000000000046c000001a200000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd00000004000000000000015600000150fc020000000afb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003b00000150000000c700fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb00000016004c006500660074002000430061006d0065007200610000000222000001490000000000000000fb0000000e003200440020004d00650073006800000004350000009f0000000000000000000000010000019000000150fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073010000003b00000150000000a000fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e100000197000000030000075e000000cafc0100000004fb0000000800540069006d006502000004270000025800000359000001e0fb00000010004c00650066007400200049006d00670100000000000003be0000006700fffffffb000000120044006500620075006700200049006d006701000003c40000039a0000007800fffffffb0000000800540069006d006501000000000000045000000000000000000000046c0000015000000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Selection:
     collapsed: false
   Time:
