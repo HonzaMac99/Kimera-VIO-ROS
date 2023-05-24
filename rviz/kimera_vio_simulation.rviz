@@ -241,8 +241,8 @@ Visualization Manager:
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: 0.06413030624389648
-        Min Value: 0.05798029899597168
+        Max Value: 2.1745872497558594
+        Min Value: 1.789878010749817
         Value: true
       Axis: Z
       Channel Name: intensity
@@ -291,7 +291,7 @@ Visualization Manager:
       Unreliable: false
       Value: true
     - Class: mesh_rviz_plugins/TexturedMesh
-      Enabled: true
+      Enabled: false
       Name: 3D Mesh Textured
       Normal Size: 0.05000000074505806
       Phong Shading: true
@@ -304,7 +304,7 @@ Visualization Manager:
       Show Normals: false
       Texture Transport Hint: raw
       Texture topic: /kimera_vio_ros/kimera_vio_ros_node/feature_tracks
-      Value: true
+      Value: false
     - Angle Tolerance: 0.10000000149011612
       Class: rviz/Odometry
       Covariance:
@@ -487,7 +487,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/ThirdPersonFollower
-      Distance: 4.1056976318359375
+      Distance: 5.6037702560424805
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -495,17 +495,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 0.09173774719238281
-        Y: -1.2096024751663208
+        X: 1.5102370977401733
+        Y: -0.028169870376586914
         Z: 5.588816748058889e-06
       Focal Shape Fixed Size: false
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.6403979659080505
+      Pitch: 0.40039822459220886
       Target Frame: kimera/left_cam
-      Yaw: 1.5785855054855347
+      Yaw: 3.178607702255249
     Saved:
       - Class: rviz/ThirdPersonFollower
         Distance: 1.2782713174819946
